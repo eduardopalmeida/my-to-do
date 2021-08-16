@@ -1,0 +1,38 @@
+{
+  "-M_Q4Ol_lpfRu4v-rNwc" : {
+    "done" : true,
+    "goal" : 5,
+    "score" : 3,
+    "text" : "compras"
+  },
+  "-M_Q4Q6djG2wY19IBY-W" : {
+    "done" : true,
+    "goal" : 5,
+    "score" : 3,
+    "text" : "exercicio"
+  },
+  "-M_Q4SAQqMI3ozJq9ohv" : {
+    "done" : true,
+    "goal" : 5,
+    "score" : 3,
+    "text" : "arrrumar quarto"
+  },
+  "-M_RNA-OW9iI2FcKdZRB" : {
+    "done" : true,
+    "goal" : 5,
+    "score" : 3,
+    "text" : "importante"
+  },
+  "-M_Rb0-JzQF2_0UIy8-f" : {
+    "done" : true,
+    "goal" : 5,
+    "score" : 3,
+    "text" : "manteiga"
+  },
+  "-M_RbDOnjQ9GAknmNffr" : {
+    "done" : false,
+    "goal" : 5,
+    "score" : 3,
+    "text" : "Test"
+  }
+}
