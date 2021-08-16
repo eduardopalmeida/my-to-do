@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import Task from './Components/Task/Task';
 import LoadingSpinner from './UI/LoadingSpinner';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTasks, sendTaskData, addTask } from './store/data-actions';
+import { fetchTasks, addTask } from './store/data-actions';
 
 function App() {
 
@@ -17,7 +17,7 @@ function App() {
 
   const dispatch = useDispatch();
   
-  const changed = useSelector(state => state.data.changed)
+  // const changed = useSelector(state => state.data.changed)
   const data = useSelector( state => state.data);
 
   const taskTextInputRef = useRef();
@@ -64,7 +64,8 @@ function App() {
               id="ttext" 
               name="ttext" 
               ref={taskTextInputRef}
-              maxLength="19"
+              maxLength="25"
+              placeholder="...task you need to do"
               required
             />
             <input 

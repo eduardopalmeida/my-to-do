@@ -29,8 +29,8 @@ const Task = (props) => {
     }
     
     const scoreUPHandler = () => {
-        console.log("PROPS.SCORE :: ", props.score);
-        console.log("PROPS.GOAL :: ", props.goal);
+        console.log("PROPS.SCORE :: ", props.score );
+        console.log("PROPS.GOAL :: ",  props.goal  );
         
         if(props.score < props.goal) {
             dispatch(scoreUPnDOWN(props.id, props.score + 1));
