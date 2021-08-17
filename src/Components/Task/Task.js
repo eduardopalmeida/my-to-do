@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { swapTaskDone, scoreUPnDOWN } from '../../store/data-actions';
+import { swapTaskDone, scoreUPnDOWN, deleteTask } from '../../store/data-actions';
 import classes from './Task.module.css';
 
 const Task = (props) => {
@@ -29,9 +29,6 @@ const Task = (props) => {
     }
     
     const scoreUPHandler = () => {
-        console.log("PROPS.SCORE :: ", props.score );
-        console.log("PROPS.GOAL :: ",  props.goal  );
-        
         if(props.score < props.goal) {
             dispatch(scoreUPnDOWN(props.id, props.score + 1));
         }
@@ -49,8 +46,19 @@ const Task = (props) => {
         }
     }
 
+    const handleImageDelete = () => {
+        dispatch(deleteTask(props.id));
+    }
+
     return (
         <li className={classes.retangulo} >
+            <div
+                className={classes.delete}
+                type="button"
+                onClick={() => handleImageDelete()}
+            >
+                X
+            </div>
             <div className={classes.text}>{props.text}</div>
             <div className={classes.work}>
                 {/* {quantityCalc(props.score, props.goal)} */}

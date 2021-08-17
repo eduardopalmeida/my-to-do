@@ -27,9 +27,13 @@ const dataSlice = createSlice({
             state.changed = true;
         },
         addTask(state, action) {
-            // console.log("TASK #2 ::", action.payload);
-
             state.tasks.push(action.payload)
+            state.changed = true;
+        },
+        deleteTask(state, action) {
+            const newState = state.tasks.filter( task => task.id !== action.payload )
+            state.tasks = newState;
+            
             state.changed = true;
         }
     }

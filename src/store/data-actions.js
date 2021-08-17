@@ -61,8 +61,6 @@ export const addTask = (text, goal) => {
         text : text,
     };
 
-    console.log("TASK #1 ::: ", task);
-
     return async (dispatch) => {
         try {
             let tmp_ID;
@@ -83,6 +81,25 @@ export const addTask = (text, goal) => {
         }
         catch (error) {
             console.log("ERROR : ADDING TASK");
+        }
+    }
+}
+
+export const deleteTask = (id) => {
+    return async (dispatch) => {
+        try {
+            await axios.delete(FIREBASE_URL + 'tasks/' + id + '.json')
+            .then( (response) => {
+                console.log("Axios - TASK DELETE - Success :: ", response );
+            })
+            .catch((error) => {
+                console.log("Axios - TASK DELETE - Error :: ", error );
+            });
+
+            dispatch(dataSliceActions.deleteTask(id));
+        }
+        catch (error) {
+            console.log("ERROR : DELETING TASK");
         }
     }
 }

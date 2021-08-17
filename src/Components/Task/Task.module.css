@@ -6,16 +6,33 @@
     border-radius: 10px;
     display: flex;
     height: 2rem;
+    position: relative;
+}
+
+.retangulo .delete {
+    background-color: red;
+    width: 20px;
+    padding: 10px;
+    color: white;
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.retangulo:hover .delete {
+    display: block;
 }
 
 .text {
+    flex: 4;
     font-size: 1.5rem;
     margin-top: -0.1rem;
-    flex: 4;
 } 
 .work {
-    margin-top: 0.25rem;
     flex: 3;
+    margin-top: 0.25rem;
 } 
 
 .score {
@@ -28,3 +45,5 @@
     cursor: pointer;
     font-size: 2rem;
 } 
+
+  
