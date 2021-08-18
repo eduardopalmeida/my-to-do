@@ -9,7 +9,7 @@
     position: relative;
 }
 
-.retangulo .button{
+.retangulo .buttons{
     background-color: white;
     border-radius: 10px;
     cursor: pointer;
@@ -18,7 +18,7 @@
     display: none;
 }
 
-.retangulo:hover .button
+.retangulo:hover .buttons
 {
     display: block;
 }

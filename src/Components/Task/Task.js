@@ -64,17 +64,14 @@ const Task = (props) => {
 
     return (
         <li className={classes.retangulo} >
-            <div className={classes.button}>
+            <div className={classes.buttons}>
                 <button 
-                    className={classes.delete}
                     onClick={handleTaskDelete}
                 >❌</button>
                 <button 
-                    className={classes.up}
                     onClick={handleTaskPositionUP}
                 >⬆</button>
                 <button 
-                    className={classes.down}
                     onClick={handleTaskPositionDOWN}
                 >⬇</button>
             </div>

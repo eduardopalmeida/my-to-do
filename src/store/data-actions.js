@@ -153,7 +153,7 @@ export const positionUP = (taskID, prevTaskID, position, size) => {
     return async(dispatch) => {
         try {
             if( ( position - 1 )  >= 0 ) { 
-                await axios.patch(FIREBASE_URL + 'tasks/' + taskID + '.json', { position : position - 1})
+                await axios.patch(FIREBASE_URL + 'tasks/' + taskID + '.json', { position : position - 1 })
                     .then( (response) => {
                         console.log("Axios - POSTITION_UP - Success :: ", response );
                     })
@@ -161,7 +161,7 @@ export const positionUP = (taskID, prevTaskID, position, size) => {
                         console.log("Axios - POSTITION_UP - Error :: ", error );
                     });
 
-                    await axios.patch(FIREBASE_URL + 'tasks/' + prevTaskID + '.json', { position : position + 1 })
+                    await axios.patch(FIREBASE_URL + 'tasks/' + prevTaskID + '.json', { position : position })
                     .then( (response) => {
                         console.log("Axios - POSTITION_UP_PREV - Success :: ", response );
                     })
@@ -192,7 +192,7 @@ export const positionDOWN = (taskID, nextTaskID, position, size) => {
                     console.log("Axios - POSTITION_DOWN - Error :: ", error );
                 });
 
-                await axios.patch(FIREBASE_URL + 'tasks/' + nextTaskID + '.json', { position : position - 1 })
+                await axios.patch(FIREBASE_URL + 'tasks/' + nextTaskID + '.json', { position : position })
                 .then( (response) => {
                     console.log("Axios - POSTITION_DOWN_PREV - Success :: ", response );
                 })
