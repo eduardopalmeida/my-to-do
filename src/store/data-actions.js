@@ -3,6 +3,14 @@ import { dataSliceActions } from "./data-slice";
 
 const FIREBASE_URL = 'https://react-http-1eb72-default-rtdb.firebaseio.com/';
 
+// sorts arrays with the indicated array of fields
+const fieldSorter = (fields) => (a, b) => fields.map(o => {
+    let dir = 1;
+    if (o[0] === '-') { dir = -1; o=o.substring(1); }
+    return a[o] > b[o] ? dir : a[o] < b[o] ? -(dir) : 0;
+}).reduce((p, n) => p ? p : n, 0);
+
+
 export const sendTaskData = (taskData) => {
     return async (dispatch) => {
         try {
@@ -40,10 +48,8 @@ export const fetchTasks = () => {
               });
             }
 
-            console.log("PIM!");
-
             dispatch(dataSliceActions.replaceTasks({
-                tasks : transformedData || {}
+                tasks : transformedData.sort(fieldSorter(['position'])) || {}
             }))
 
         } catch (error) {
@@ -53,7 +59,6 @@ export const fetchTasks = () => {
 }
 
 export const addTask = (text, goal) => {
-
     const task = {
         done : false,
         goal : goal,
@@ -127,10 +132,6 @@ export const swapTaskDone = (taskID, value) => {
 export const scoreUPnDOWN = (taskID, score) => {
     return async (dispatch) => {
         try {
-
-            console.log("TASK_ID :: ", taskID);
-            console.log("SCORE :: ", score);
-
             await axios.patch(FIREBASE_URL + 'tasks/' + taskID + '.json', {score: score})
             .then( (response) => {
                 console.log("Axios - SCORE - Success :: ", response );
@@ -143,7 +144,70 @@ export const scoreUPnDOWN = (taskID, score) => {
                 taskID, score
             }));
         } catch (error) {
-            console.log("ERROR : TRANSFORMING TASK DATA");
+            console.log("ERROR : TRANSFORMING TASK DATA - SCORE");
+        }
+    }
+}
+
+export const positionUP = (taskID, prevTaskID, position, size) => {
+    return async(dispatch) => {
+        try {
+            if( ( position - 1 )  >= 0 ) { 
+                await axios.patch(FIREBASE_URL + 'tasks/' + taskID + '.json', { position : position - 1})
+                    .then( (response) => {
+                        console.log("Axios - POSTITION_UP - Success :: ", response );
+                    })
+                    .catch((error) => {
+                        console.log("Axios - POSTITION_UP - Error :: ", error );
+                    });
+
+                    await axios.patch(FIREBASE_URL + 'tasks/' + prevTaskID + '.json', { position : position + 1 })
+                    .then( (response) => {
+                        console.log("Axios - POSTITION_UP_PREV - Success :: ", response );
+                    })
+                    .catch((error) => {
+                        console.log("Axios - POSTITION_UP_PREV - Error :: ", error );
+                    });
+
+                    dispatch(dataSliceActions.taskMoveUP({
+                        currTaskID : taskID,
+                        prevTaskID : prevTaskID
+                    }));
+            }
+        } catch (error) {
+            console.log("ERROR : TRANSFORMING TASK DATA -- POSITION_UP");
+        }
+    }
+}
+
+export const positionDOWN = (taskID, nextTaskID, position, size) => {
+    return async(dispatch) => {
+        try {
+            if( ( position + 1 )  <= size ) { 
+                await axios.patch(FIREBASE_URL + 'tasks/' + taskID + '.json', { position : position + 1})
+                .then( (response) => {
+                    console.log("Axios - POSTITION_DOWN - Success :: ", response );
+                })
+                .catch((error) => {
+                    console.log("Axios - POSTITION_DOWN - Error :: ", error );
+                });
+
+                await axios.patch(FIREBASE_URL + 'tasks/' + nextTaskID + '.json', { position : position - 1 })
+                .then( (response) => {
+                    console.log("Axios - POSTITION_DOWN_PREV - Success :: ", response );
+                })
+                .catch((error) => {
+                    console.log("Axios - POSTITION_DOWN_PREV - Error :: ", error );
+                });
+
+                dispatch(dataSliceActions.taskMoveDOWN({
+                    currTaskID : taskID,
+                    nextTaskID : nextTaskID
+                }));
+                
+            }
+        } catch (error) {
+            console.log("ERROR : TRANSFORMING TASK DATA -- POSITION_UP");
         }
     }
 }

@@ -59,7 +59,7 @@ function App() {
         >
             <label htmlFor='ttext'>Task </label>
             <input 
-              className={classes.texto} 
+              className={classes.texto}
               type="text" 
               id="ttext" 
               name="ttext" 
@@ -69,6 +69,7 @@ function App() {
               required
             />
             <input 
+              className={classes.score}
               type="number" 
               id="tgoal" 
               defaultValue="1" 
@@ -84,16 +85,28 @@ function App() {
 
           <ul className={classes.taskContainer}>
             {
-              data.tasks.map( (task, index) => (
-                <Task 
-                  key   = { index      }
-                  id    = { task.id    }
-                  done  = { task.done  }
-                  score = { task.score }
-                  goal  = { task.goal  }
-                  text  = { task.text  }
-                />
-              ))
+              data.tasks.map( (task, index) => {
+
+                const size = data.tasks.length
+
+                const prev = index === 0 ? task.id         : (data.tasks[index - 1]).id
+                const next = index === (size -1) ? task.id : (data.tasks[index + 1]).id
+
+                return(
+                  <Task 
+                    key       = { index         }
+                    id        = { task.id       }
+                    position  = { task.position }
+                    done      = { task.done     }
+                    score     = { task.score    }
+                    goal      = { task.goal     }
+                    text      = { task.text     }
+                    prev      = { prev          }
+                    next      = { next          }
+                    size      = { size          }
+                  />
+                )
+              })
             }
           </ul>
           : <p className={classes.emptyContainer}>Please add a task...</p>

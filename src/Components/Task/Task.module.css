@@ -9,19 +9,23 @@
     position: relative;
 }
 
-.retangulo .delete {
-    background-color: red;
-    width: 20px;
-    padding: 10px;
-    color: white;
-    display: none;
+.retangulo .delete,
+.retangulo .up,
+.retangulo .down
+{
+    background-color: white;
+    border-right: solid;
+    border-radius: 10px;
     cursor: pointer;
-    position: absolute;
-    top: 0;
-    left: 0;
+    display: none;
+    width: 0.5%;
+    flex: 0.2;
 }
 
-.retangulo:hover .delete {
+.retangulo:hover .delete,
+.retangulo:hover .up,
+.retangulo:hover .down
+{
     display: block;
 }
 

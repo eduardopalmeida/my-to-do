@@ -22,13 +22,17 @@
 
 .addTaskForm .texto {
   flex: 6;
+  /* width: 70%; */
+  font-size: 20pt;
+  border-radius: 10px;
+  margin-right: 1rem;
 }
 
 .addTaskForm label {
   font-size: 32px;
   margin-right: 0.5rem;
 }
-.addTaskForm input  {
+.addTaskForm .score  {
   flex: 1;
   /* width: 70%; */
   font-size: 20pt;

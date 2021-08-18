@@ -1,0 +1,65 @@
+{
+  "-MhDow2yjMbZnrZ3QxGC" : {
+    "position": 0,
+    "done" : true,
+    "goal" : 1,
+    "score" : 1,
+    "text" : "comprar manteiga"
+  },
+  "-MhDqG3rnYrTwa0uMb-h" : {
+    "position": 1,
+    "done" : false,
+    "goal" : 1,
+    "score" : 0,
+    "text" : "ligar para o dentista"
+  },
+  "-MhE0s0F30BvMBLlqLA-" : {
+    "position": 2,
+    "done" : false,
+    "goal" : 3,
+    "score" : 0,
+    "text" : "Ver ryainair para Copenha"
+  },
+  "-MhE1pmKGIcsGGBrU5uK" : {
+    "position": 3,
+    "done" : false,
+    "goal" : 5,
+    "score" : 0,
+    "text" : "Massajar o meu amor"
+  },
+  "-MhE2baWRrTcgEJp_bQG" : {
+    "position": 4,
+    "done" : false,
+    "goal" : 2,
+    "score" : 0,
+    "text" : "Tirar caruncho do pianet"
+  },
+  "-MhIiBiSUCK2_7YsENWv" : {
+    "position": 5,
+    "done" : false,
+    "goal" : 1,
+    "score" : 0,
+    "text" : "Miminhos infinitos à Sara"
+  },
+  "-MhIiXRQ7XlTMQ63h4kc" : {
+    "position": 6,
+    "done" : false,
+    "goal" : 1,
+    "score" : 0,
+    "text" : "Planear Veneza 2022"
+  },
+  "-MhIioXxjJxeFLlh0BNT" : {
+    "position": 7,
+    "done" : false,
+    "goal" : 1,
+    "score" : 0,
+    "text" : "FAUSTO casa da música DIA"
+  },
+  "-MhNep-MOjo6jGYnCeib" : {
+    "position": 8,
+    "done" : false,
+    "goal" : 5,
+    "score" : 3,
+    "text" : "ensaiar com Carbon"
+  }
+}

@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { swapTaskDone, scoreUPnDOWN, deleteTask } from '../../store/data-actions';
+import { swapTaskDone, scoreUPnDOWN, deleteTask, positionUP, positionDOWN } from '../../store/data-actions';
 import classes from './Task.module.css';
 
 const Task = (props) => {
@@ -46,19 +46,36 @@ const Task = (props) => {
         }
     }
 
-    const handleImageDelete = () => {
+    const handleTaskDelete = () => {
         dispatch(deleteTask(props.id));
     }
 
+    const handleTaskPositionUP = () => {
+        dispatch( positionUP(props.id, props.prev, props.position, props.size ) );
+    }
+
+    const handleTaskPositionDOWN = () => {
+        dispatch( positionDOWN(props.id, props.next, props.position, props.size ) );
+    }
+
+    // ⬇⬆
+
+    // console.log("PROPS :: ", props);
+
     return (
         <li className={classes.retangulo} >
-            <div
+            <button 
                 className={classes.delete}
-                type="button"
-                onClick={() => handleImageDelete()}
-            >
-                X
-            </div>
+                onClick={handleTaskDelete}
+            >❌</button>
+            <button 
+                className={classes.up}
+                onClick={handleTaskPositionUP}
+            >⬆</button>
+            <button 
+                className={classes.down}
+                onClick={handleTaskPositionDOWN}
+            >⬇</button>
             <div className={classes.text}>{props.text}</div>
             <div className={classes.work}>
                 {/* {quantityCalc(props.score, props.goal)} */}
@@ -78,7 +95,7 @@ const Task = (props) => {
             <div 
                 className={classes.done} 
                 onClick={doneHandler} 
-            >{props.done ? "✅" : "❌"}</div>
+            >{props.done ? "✅" : "☑️"}</div>
         </li>
     )
 }
