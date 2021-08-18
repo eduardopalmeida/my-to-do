@@ -9,22 +9,16 @@
     position: relative;
 }
 
-.retangulo .delete,
-.retangulo .up,
-.retangulo .down
-{
+.retangulo .button{
     background-color: white;
-    border-right: solid;
     border-radius: 10px;
     cursor: pointer;
+    position: absolute;
+    flex: 0.1;
     display: none;
-    width: 0.5%;
-    flex: 0.2;
 }
 
-.retangulo:hover .delete,
-.retangulo:hover .up,
-.retangulo:hover .down
+.retangulo:hover .button
 {
     display: block;
 }

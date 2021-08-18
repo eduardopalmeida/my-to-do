@@ -64,18 +64,20 @@ const Task = (props) => {
 
     return (
         <li className={classes.retangulo} >
-            <button 
-                className={classes.delete}
-                onClick={handleTaskDelete}
-            >❌</button>
-            <button 
-                className={classes.up}
-                onClick={handleTaskPositionUP}
-            >⬆</button>
-            <button 
-                className={classes.down}
-                onClick={handleTaskPositionDOWN}
-            >⬇</button>
+            <div className={classes.button}>
+                <button 
+                    className={classes.delete}
+                    onClick={handleTaskDelete}
+                >❌</button>
+                <button 
+                    className={classes.up}
+                    onClick={handleTaskPositionUP}
+                >⬆</button>
+                <button 
+                    className={classes.down}
+                    onClick={handleTaskPositionDOWN}
+                >⬇</button>
+            </div>
             <div className={classes.text}>{props.text}</div>
             <div className={classes.work}>
                 {/* {quantityCalc(props.score, props.goal)} */}
