@@ -3,11 +3,15 @@
   border-radius: 15px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
   width: auto;
-  max-width: 30%;
+  max-width: 35%;
   text-align: center;
   font-family: 'Courier New', Courier, monospace;
-  font-size: 30pt;
+  font-size: 65pt;
+  font-weight:bold;
 }
 
 .addTaskForm {
@@ -44,6 +48,7 @@
   flex: 2;
   background-color: #d3d3d3;
   color: white;
+  font-weight: bolder;
   /* text-align: center; */
   border: none;
   padding: 10px 20px;

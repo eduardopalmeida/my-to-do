@@ -4,6 +4,8 @@ import Task from './Components/Task/Task';
 import LoadingSpinner from './UI/LoadingSpinner';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTasks, addTask } from './store/data-actions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 
 function App() {
 
@@ -17,7 +19,6 @@ function App() {
 
   const dispatch = useDispatch();
   
-  // const changed = useSelector(state => state.data.changed)
   const data = useSelector( state => state.data);
 
   const taskTextInputRef = useRef();
@@ -51,7 +52,7 @@ function App() {
       data.tasks ?
       <>
         <div className={classes.titulo}>
-          <h1>TO-DO</h1>
+          TO-DO <FontAwesomeIcon icon={faCheckSquare} color="blue" />
         </div>
         <form 
           className={classes.addTaskForm}
@@ -89,8 +90,8 @@ function App() {
 
                 const size = data.tasks.length
 
-                const prev = index === 0 ? task.id         : (data.tasks[index - 1]).id
-                const next = index === (size -1) ? task.id : (data.tasks[index + 1]).id
+                const next = index === 0         ? task.id : (data.tasks[index - 1]).id
+                const prev = index === (size -1) ? task.id : (data.tasks[index + 1]).id
 
                 return(
                   <Task 

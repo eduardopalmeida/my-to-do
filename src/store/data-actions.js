@@ -1,15 +1,8 @@
 import axios from "axios";
 import { dataSliceActions } from "./data-slice";
+import { fieldSorter } from  '../utils/extras';
 
 const FIREBASE_URL = 'https://react-http-1eb72-default-rtdb.firebaseio.com/';
-
-// sorts arrays with the indicated array of fields
-const fieldSorter = (fields) => (a, b) => fields.map(o => {
-    let dir = 1;
-    if (o[0] === '-') { dir = -1; o=o.substring(1); }
-    return a[o] > b[o] ? dir : a[o] < b[o] ? -(dir) : 0;
-}).reduce((p, n) => p ? p : n, 0);
-
 
 export const sendTaskData = (taskData) => {
     return async (dispatch) => {
@@ -49,7 +42,8 @@ export const fetchTasks = () => {
             }
 
             dispatch(dataSliceActions.replaceTasks({
-                tasks : transformedData.sort(fieldSorter(['position'])) || {}
+                tasks : transformedData.sort(fieldSorter(['position'])) || {},
+                size : transformedData.length
             }))
 
         } catch (error) {
@@ -59,16 +53,17 @@ export const fetchTasks = () => {
 }
 
 export const addTask = (text, goal) => {
-    const task = {
-        done : false,
-        goal : goal,
-        score : 0,
-        text : text,
-    };
-
-    return async (dispatch) => {
+    return async (dispatch, getstate) => {
         try {
             let tmp_ID;
+
+            const task = {
+                done : false,
+                goal : goal,
+                score : 0,
+                text : text,
+                position : getstate().data.size
+            };
 
             await axios.post(FIREBASE_URL + 'tasks.json', task)
             .then( (response) => {
@@ -90,10 +85,11 @@ export const addTask = (text, goal) => {
     }
 }
 
-export const deleteTask = (id) => {
-    return async (dispatch) => {
+export const deleteTask = (taskID, taskPosition) => {
+    return async (dispatch, getstate) => {
         try {
-            await axios.delete(FIREBASE_URL + 'tasks/' + id + '.json')
+            // DELETE TASK
+            await axios.delete(FIREBASE_URL + 'tasks/' + taskID + '.json')
             .then( (response) => {
                 console.log("Axios - TASK DELETE - Success :: ", response );
             })
@@ -101,7 +97,29 @@ export const deleteTask = (id) => {
                 console.log("Axios - TASK DELETE - Error :: ", error );
             });
 
-            dispatch(dataSliceActions.deleteTask(id));
+            // RECTIFY OTHER TASK'S POSITIONS
+            const size = getstate().data.size;
+
+            for (let i = 0; i < size; i++) {
+                if(getstate().data.tasks[i].position > taskPosition) {
+                    const otherTaskID = getstate().data.tasks[i].id;
+                    const otherTaskPosition = getstate().data.tasks[i].position;
+
+                    await axios.patch(FIREBASE_URL + 'tasks/' + otherTaskID + '.json', { position : otherTaskPosition - 1 })
+                    .then( (response) => {
+                        console.log("Axios - TASK EDIT_POSITION - Success :: ", response );
+                    })
+                    .catch((error) => {
+                        console.log("Axios - TASK EDIT_POSITION - Error :: ", error );
+                    });
+                }
+            }
+
+            // CHANGE STATE
+            dispatch(dataSliceActions.deleteTask({
+                id : taskID,
+                position : taskPosition
+            }));
         }
         catch (error) {
             console.log("ERROR : DELETING TASK");
@@ -140,7 +158,7 @@ export const scoreUPnDOWN = (taskID, score) => {
                 console.log("Axios - SCORE - Error :: ", error );
             });
             
-            dispatch(dataSliceActions.scoreTaskeUp({
+            dispatch(dataSliceActions.scoreTaskeUPnDOWN({
                 taskID, score
             }));
         } catch (error) {
@@ -149,58 +167,58 @@ export const scoreUPnDOWN = (taskID, score) => {
     }
 }
 
-export const positionUP = (taskID, prevTaskID, position, size) => {
+export const positionDOWN = (taskID, prevTaskID, position, size) => {
     return async(dispatch) => {
         try {
             if( ( position - 1 )  >= 0 ) { 
                 await axios.patch(FIREBASE_URL + 'tasks/' + taskID + '.json', { position : position - 1 })
                     .then( (response) => {
-                        console.log("Axios - POSTITION_UP - Success :: ", response );
+                        console.log("Axios - POSTITION_DOWN - Success :: ", response );
                     })
                     .catch((error) => {
-                        console.log("Axios - POSTITION_UP - Error :: ", error );
+                        console.log("Axios - POSTITION_DOWN - Error :: ", error );
                     });
 
                     await axios.patch(FIREBASE_URL + 'tasks/' + prevTaskID + '.json', { position : position })
                     .then( (response) => {
-                        console.log("Axios - POSTITION_UP_PREV - Success :: ", response );
+                        console.log("Axios - POSTITION_DOWN_PREV - Success :: ", response );
                     })
                     .catch((error) => {
-                        console.log("Axios - POSTITION_UP_PREV - Error :: ", error );
+                        console.log("Axios - POSTITION_DOWN_PREV - Error :: ", error );
                     });
 
-                    dispatch(dataSliceActions.taskMoveUP({
+                    dispatch(dataSliceActions.taskMoveDOWN({
                         currTaskID : taskID,
                         prevTaskID : prevTaskID
                     }));
             }
         } catch (error) {
-            console.log("ERROR : TRANSFORMING TASK DATA -- POSITION_UP");
+            console.log("ERROR : TRANSFORMING TASK DATA -- POSITION_DOWN");
         }
     }
 }
 
-export const positionDOWN = (taskID, nextTaskID, position, size) => {
+export const positionUP = (taskID, nextTaskID, position, size) => {
     return async(dispatch) => {
         try {
-            if( ( position + 1 )  <= size ) { 
+            if( ( position + 1 )  < size ) { 
                 await axios.patch(FIREBASE_URL + 'tasks/' + taskID + '.json', { position : position + 1})
                 .then( (response) => {
-                    console.log("Axios - POSTITION_DOWN - Success :: ", response );
+                    console.log("Axios - POSTITION_UP - Success :: ", response );
                 })
                 .catch((error) => {
-                    console.log("Axios - POSTITION_DOWN - Error :: ", error );
+                    console.log("Axios - POSTITION_UP - Error :: ", error );
                 });
 
                 await axios.patch(FIREBASE_URL + 'tasks/' + nextTaskID + '.json', { position : position })
                 .then( (response) => {
-                    console.log("Axios - POSTITION_DOWN_PREV - Success :: ", response );
+                    console.log("Axios - POSTITION_UP_PREV - Success :: ", response );
                 })
                 .catch((error) => {
-                    console.log("Axios - POSTITION_DOWN_PREV - Error :: ", error );
+                    console.log("Axios - POSTITION_UP_PREV - Error :: ", error );
                 });
 
-                dispatch(dataSliceActions.taskMoveDOWN({
+                dispatch(dataSliceActions.taskMoveUP({
                     currTaskID : taskID,
                     nextTaskID : nextTaskID
                 }));

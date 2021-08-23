@@ -1,20 +1,38 @@
 import { useDispatch } from 'react-redux';
-import { swapTaskDone, scoreUPnDOWN, deleteTask, positionUP, positionDOWN } from '../../store/data-actions';
+import { swapTaskDone, scoreUPnDOWN, deleteTask, positionDOWN, positionUP } from '../../store/data-actions';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+        faCheckCircle as fasCheckCircle, 
+        faCircle as fasCircle, 
+        faSortUp, 
+        faSortDown, 
+        faTimes,
+       } from '@fortawesome/free-solid-svg-icons';
+import { 
+        faCheckCircle as farCheckCircle, 
+        faCircle as farCircle,
+        faPlusSquare,
+        faMinusSquare
+       } from '@fortawesome/free-regular-svg-icons';
+
 import classes from './Task.module.css';
 
 const Task = (props) => {
     const dispatch = useDispatch();
-    
+
     const scoreCalc = (score,goal) => {
-        let res = '';
-        for(let i = goal - score; i > 0; i--) { res += '⬜️';     }
-        return res;
+        let jsxBuffer = [];
+        for(let i = goal - score; i > 0; i--) { jsxBuffer.push(<FontAwesomeIcon key={i} icon={farCircle} />); }
+
+        return jsxBuffer;
     }
     
     const goalCalc = (score) => {
-        let res = '';
-        for(let i = score; i > 0; i--)        { res += '⬛️';     }
-        return res;
+        let jsxBuffer = [];
+        for(let i = score; i > 0; i--) { jsxBuffer.push(<FontAwesomeIcon key={i} icon={fasCircle} />); }
+
+        return jsxBuffer;
     }
     
     const doneHandler = () => {
@@ -47,54 +65,66 @@ const Task = (props) => {
     }
 
     const handleTaskDelete = () => {
-        dispatch(deleteTask(props.id));
+        dispatch(deleteTask(props.id, props.position ));
     }
 
     const handleTaskPositionUP = () => {
-        dispatch( positionUP(props.id, props.prev, props.position, props.size ) );
+        dispatch( positionUP(props.id, props.next, props.position, props.size ) );
     }
 
     const handleTaskPositionDOWN = () => {
-        dispatch( positionDOWN(props.id, props.next, props.position, props.size ) );
+        dispatch( positionDOWN(props.id, props.prev, props.position, props.size ) );
     }
-
-    // ⬇⬆
-
-    // console.log("PROPS :: ", props);
 
     return (
         <li className={classes.retangulo} >
-            <div className={classes.buttons}>
-                <button 
-                    onClick={handleTaskDelete}
-                >❌</button>
-                <button 
-                    onClick={handleTaskPositionUP}
-                >⬆</button>
-                <button 
-                    onClick={handleTaskPositionDOWN}
-                >⬇</button>
+            <div className={classes.posControls}>
+                <button onClick={handleTaskDelete} >
+                    <FontAwesomeIcon icon={faTimes} />
+                </button>
+                <button onClick={handleTaskPositionUP} >
+                    <FontAwesomeIcon icon={faSortUp} />
+                </button>
+                <button onClick={handleTaskPositionDOWN} >
+                    <FontAwesomeIcon icon={faSortDown} />
+                </button>
             </div>
-            <div className={classes.text}>{props.text}</div>
-            <div className={classes.work}>
-                {/* {quantityCalc(props.score, props.goal)} */}
+            <div className={classes.text}>
+                {props.text}
+            </div>
+            <div className={classes.work} >
+                <button className={classes.scoreControls} >
+                    <FontAwesomeIcon  
+                        icon={faMinusSquare} 
+                        onClick={scoreDOWNHandler}
+                    />
+                </button>
                 <span 
                     className={classes.score} 
-                    onClick={scoreDOWNHandler} 
                 >
                     { goalCalc(props.score) }
                 </span>
                 <span 
                     className={classes.score} 
-                    onClick={scoreUPHandler} 
                 >
                     { scoreCalc(props.score, props.goal)  }
                 </span>
+                <button className={classes.scoreControls} >
+                    <FontAwesomeIcon 
+                        icon={faPlusSquare} 
+                        onClick={scoreUPHandler}
+                    />
+                </button>
             </div>
             <div 
                 className={classes.done} 
                 onClick={doneHandler} 
-            >{props.done ? "✅" : "☑️"}</div>
+            >
+            {
+                props.done ? <FontAwesomeIcon icon={fasCheckCircle} color="#24b417" /> 
+                           : <FontAwesomeIcon icon={farCheckCircle} color="#c8e4c6" /> 
+            }
+            </div>
         </li>
     )
 }
